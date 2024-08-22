@@ -1,0 +1,21 @@
+workflows:
+  ios-workflow:
+    name: iOS Workflow
+    environment:
+      xcode: latest  # Используемая версия Xcode
+    scripts:
+      - name: Install CocoaPods
+        script: |
+          gem install cocoapods
+          pod install
+      - name: Build for iOS
+        script: |
+          xcodebuild -workspace YourApp.xcworkspace -scheme YourApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' build
+      - name: Run Device Info Script
+        script: |
+          python3 device_info.py  # Запускает Python-скрипт для получения информации о устройстве
+      - name: Run Unit Tests
+        script: |
+          xcodebuild test -workspace YourApp.xcworkspace -scheme YourApp -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest'
+    artifacts:
+      - build/ios/Debug-iphonesimulator/YourApp.app
